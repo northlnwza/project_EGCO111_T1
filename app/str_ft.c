@@ -46,7 +46,8 @@ char	*strinput(char *str)
 	int	ch;
 
 	i = 0;
-	while (ch != '\n' && i < MAX_INPUT_LENGTH)
+	ch = 0;
+	while (ch != '\n' && i < MAX_INPUT_LENGTH - 1)
 	{	
 		ch = getchar();
 		if (ch == '\n')

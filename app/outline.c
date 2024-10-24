@@ -4,31 +4,40 @@ void	parse_cmd(char *input)
 {
 	if (ft_strcmp(input, "help") == 0)
 	{
-		printf("type \"exit\" to quit program\n");
+		system(CLEAR_CMD);		
+		printf("-----------------------------\n");
+		printf("type \"exit\" to quit program.\n");
+		printf("type \"logout\" to go to lobby.\n");
+		printf("type \"clear\" to clear terminal-text.\n");
+		printf("-----------------------------\n");
 	}
 	else if (ft_strcmp(input, "exit") == 0)
 	{
 		printf("Bye Bye Bye ...\n");
-		free(input);
 		exit(0);
+	}
+	else if (ft_strcmp(input, "logout") == 0)
+	{
+		lobby();
+	}
+	else if (ft_strcmp(input, "clear") == 0)
+	{
+		system(CLEAR_CMD);
 	}
 	else 
 		printf("type \"help\" to see all command program\n");
 }
 
-void	outline(void)
+void	outline(char *current_user)
 {
-	char	*str;
-	int	status;
+	char	str[MAX_INPUT_LENGTH];
 
-	status = 1;
-	while (status)
+	system(CLEAR_CMD);
+	printf("Login Successfully ! welcome %s \n", current_user);
+	while (1)
 	{
+		printf("user:%s\n", current_user);
 		printf("pls enter command : ");
-		str = (char *)malloc(sizeof(char) * (MAX_INPUT_LENGTH + 1));
-		if (str == 0)
-			status = 0;
 		parse_cmd(strinput(str));
-		free(str);
 	}
 }
