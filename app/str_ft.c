@@ -58,4 +58,3 @@ char	*strinput(char *str)
 	str[i] = 0;
 	return (str);
 }
-

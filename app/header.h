@@ -10,6 +10,9 @@
 #define	KEEP_USERS "users.txt"
 #define USERS_DIR "users_data"
 
+void	addDevice(const char *username);
+void	viewDevice(const char *username);
+void	deleteDevice(const char *username);
 void	toregister(void);
 void	lobby(void);
 void	outline(char *current_user);
