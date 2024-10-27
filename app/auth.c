@@ -55,3 +55,50 @@ int	login(void)
 	printf("Too many failed attempts. Access denied.\n");
 	return (0);
 }
+
+void	create_user_dir(const char *username)
+{
+	char	user_dir_path[MAX_USERNAME_LENGTH + 20];
+
+	mkdir(USERS_DIR, 0777);
+	sprintf(user_dir_path, "%s/%s", USERS_DIR, username);
+
+	if(mkdir(user_dir_path, 0777) == -1)
+	{
+		printf("Error creating user folder.\n");
+	}
+	else
+		printf("User folder create at %s.\n", user_dir_path);
+	
+}
+
+void    toregister(void)
+{
+        FILE    *file;
+        char    username[MAX_USERNAME_LENGTH];
+        char    password[MAX_PASSWORD_LENGTH];
+
+        file = fopen(KEEP_USERS, "a");
+        if (file == NULL)
+        {
+                printf("Error opening file\n");
+                return;
+        }
+        system(CLEAR_CMD);
+        printf("===== REGISTER =====\n");
+        printf("Enter your username: ");
+        scanf("%s", username);
+        printf("Enter your password: ");
+        scanf("%s", password);
+	getchar();
+
+        fprintf(file, "%s %s\n", username, password);
+        fclose(file);
+	create_user_dir(username);
+	while(1)
+	{
+		printf("\nType any key to go back to lobby");
+		if(getchar()) 
+			break;
+	}
+}

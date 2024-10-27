@@ -1,12 +1,14 @@
 #include <stdio.h>
-#include <unistd.h>
 #include <stdlib.h>
+#include <sys/stat.h>
+
 #define MAX_INPUT_LENGTH 256 
 #define MAX_USERNAME_LENGTH 100 
 #define MAX_PASSWORD_LENGTH 100 
 #define MAX_TRIES 3 
 #define CLEAR_CMD "clear"
 #define	KEEP_USERS "users.txt"
+#define USERS_DIR "users_data"
 
 void	toregister(void);
 void	lobby(void);

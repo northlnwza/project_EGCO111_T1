@@ -7,7 +7,7 @@ void	lobby()
 	while (1)
 	{
 		system(CLEAR_CMD);
-		printf("\n===== Menu =====\n");
+		printf("\n===== LOBBY =====\n");
 		printf("1. Register\n");
 		printf("2. Login\n");
 		printf("3. Exit\n");
