@@ -10,6 +10,7 @@
 #define	KEEP_USERS "users.txt"
 #define USERS_DIR "users_data"
 
+void	editDevice(const char *username);
 void	addDevice(const char *username);
 void	viewDevice(const char *username);
 void	deleteDevice(const char *username);

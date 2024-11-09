@@ -4,13 +4,14 @@ void	device_manager(const char *username)
 {
 	int	choice;
 
-	while (choice != 4)
+	while (choice != 5)
 	{
 		printf("\n=== Device Manager ===\n");
 		printf("1. View Device List\n");
 		printf("2. Add Device\n");
 		printf("3. Delete  Device\n");
-		printf("4. go back\n");
+		printf("4. Edit Device\n");
+		printf("5. go back\n");
 		printf("\n======================\n");
 		printf("Enter your choice: ");
 		scanf("%d", &choice);
@@ -27,6 +28,9 @@ void	device_manager(const char *username)
 				deleteDevice(username);
 				break;
 			case 4:
+				editDevice(username);
+				break;
+			case 5:
 				printf("go back to command page ...\n");
 				break;
 			default:
@@ -45,7 +49,7 @@ void	parse_cmd(char *input, const char *username)
 		printf("type \"exit\" to quit program.\n");
 		printf("type \"logout\" to go to lobby.\n");
 		printf("type \"clear\" to clear terminal-text.\n");
-		printf("type \"device\" to clear terminal-text.\n");
+		printf("type \"device\" to manage your device.\n");
 		printf("-----------------------------\n");
 	}
 	else if (ft_strcmp(input, "exit") == 0)

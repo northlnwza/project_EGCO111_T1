@@ -111,3 +111,73 @@ void	deleteDevice(const char *username)
 	fclose(file);
 	printf("Device deleted successfully.\n");
 }
+
+void	editDevice(const char *username)
+{
+	FILE	*file;
+	int	deviceCount;
+	int	deviceNumber;
+	int	i;
+	char	filepath[MAX_USERNAME_LENGTH + 30];
+	char	devices[100][MAX_INPUT_LENGTH];
+	char	newDevice[MAX_INPUT_LENGTH];
+	
+	
+	sprintf(filepath, "%s/%s/device.txt", USERS_DIR, username);
+	file = fopen(filepath, "r");
+	if (file == NULL)
+	{
+		printf("No device found for %s.\n", username);
+		return;
+	}
+	deviceCount = 0;
+	while (fgets(devices[deviceCount], sizeof(devices[deviceCount]), file))
+	{
+		deviceCount++;
+	}
+	fclose(file);
+
+	if (deviceCount == 0)
+	{
+		printf("No tasks to edit.\n");
+		return;
+	}
+	// Display devices 
+	printf("Device list for %s:\n", username);
+	i = 0;
+	while (i < deviceCount)
+	{
+		printf("%d. %s", i + 1, devices[i]);
+		i++;
+	}
+	// Ask which device to edit
+	printf("Enter the number of the device to edit: ");
+	scanf("%d", &deviceNumber);
+	getchar();
+	if (deviceNumber < 1 || deviceNumber > deviceCount)
+	{
+		printf("Invalid device number\n");
+		return;
+	}
+
+	//Prompt for new device description
+	printf("Enter the new description for device %d:", deviceNumber);
+	fgets(newDevice, sizeof(newDevice), stdin);
+	//update the device in array
+	ft_strcpy(devices[deviceNumber - 1], newDevice);
+	//write updated devices back to the file 
+	file = fopen(filepath, "w");
+	if (file == NULL)
+	{
+		printf("Error opening device list for writing");
+		return;
+	}
+	i = 0;
+	while (i < deviceCount)
+	{
+		fputs(devices[i], file);
+		i++;
+	}
+	fclose(file);
+	printf("Device updated successfully.\n");
+}	
