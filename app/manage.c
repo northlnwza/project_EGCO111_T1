@@ -1,22 +1,36 @@
 #include "header.h"
 
+typedef struct
+{
+	char	name[MAX_INPUT_LENGTH];
+	char	detail[MAX_INPUT_LENGTH];
+	char	timestamp[30];
+} Device; 
+
 void	addDevice(const char *username)
 {
 	FILE	*file;
+	Device	newDevice;
 	char	filepath[MAX_USERNAME_LENGTH + 30];
-	char	device_data[MAX_INPUT_LENGTH];
 
 	system(CLEAR_CMD);
 	sprintf(filepath, "%s/%s/device.txt", USERS_DIR, username);
-	file = fopen(filepath, "a");
+	file = fopen(filepath, "a+");
 	if (file == NULL)
 	{
 		printf("Error opening task");
 		return;
 	}
 	printf("Enter a new device:");
-	fgets(device_data, sizeof(device_data), stdin);
-	fprintf(file, "%s", device_data);
+	fgets(newDevice.name, sizeof(newDevice.name), stdin);
+	newDevice.name[strcspn(newDevice.name, "\n")] = 0;
+	printf("Enter device detail:");
+	fgets(newDevice.detail, sizeof(newDevice.detail), stdin);
+	newDevice.detail[strcspn(newDevice.detail, "\n")] = 0;
+	time_t	now = time(NULL);
+	struct	tm *t = localtime(&now);
+	strftime(newDevice.timestamp, sizeof(newDevice.timestamp), "%Y-%m-%d-%H:%M:%S", t);
+	fprintf(file, "%s, %s, %s\n", newDevice.name, newDevice.detail, newDevice.timestamp);
 	fclose(file);
 	printf("Device added successfully.\n");
 }
@@ -115,13 +129,13 @@ void	deleteDevice(const char *username)
 void	editDevice(const char *username)
 {
 	FILE	*file;
+	Device	updatedDevice;
 	int	deviceCount;
 	int	deviceNumber;
 	int	i;
 	char	filepath[MAX_USERNAME_LENGTH + 30];
-	char	devices[100][MAX_INPUT_LENGTH];
-	char	newDevice[MAX_INPUT_LENGTH];
-	
+	char	devices[100][MAX_INPUT_LENGTH * 3];
+	char	newDevice[MAX_INPUT_LENGTH * 3];
 	
 	sprintf(filepath, "%s/%s/device.txt", USERS_DIR, username);
 	file = fopen(filepath, "r");
@@ -139,7 +153,7 @@ void	editDevice(const char *username)
 
 	if (deviceCount == 0)
 	{
-		printf("No tasks to edit.\n");
+		printf("No devices to edit.\n");
 		return;
 	}
 	// Display devices 
@@ -161,9 +175,17 @@ void	editDevice(const char *username)
 	}
 
 	//Prompt for new device description
-	printf("Enter the new description for device %d:", deviceNumber);
-	fgets(newDevice, sizeof(newDevice), stdin);
+	printf("Enter new device name:");
+	fgets(updatedDevice.name, sizeof(updatedDevice.name), stdin);
+	updatedDevice.name[strcspn(updatedDevice.name, "\n")] = 0;
+	printf("Enter new device detail:");
+	fgets(updatedDevice.detail, sizeof(updatedDevice.detail), stdin);
+	updatedDevice.detail[strcspn(updatedDevice.detail, "\n")] = 0;
+	strcpy(updatedDevice.timestamp, strtok(devices[deviceNumber - 1], ", "));
+	strtok(NULL, ", ");
+	strcpy(updatedDevice.timestamp, strtok(NULL, ", "));
 	//update the device in array
+	sprintf(newDevice, "%s, %s, %s", updatedDevice.name, updatedDevice.detail, updatedDevice.timestamp);
 	ft_strcpy(devices[deviceNumber - 1], newDevice);
 	//write updated devices back to the file 
 	file = fopen(filepath, "w");
