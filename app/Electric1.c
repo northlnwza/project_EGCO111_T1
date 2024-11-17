@@ -10,19 +10,23 @@ typedef struct {
     int watt;
 } Appliance;
 
-Appliance appliance[50];
-int appliance_count = 0;
-
+//Appliance appliance[50];
+//int appliance_count = 0;
 void displayMenu(void);
-void inputAppliance(const char *username);
-void displaySummary(void);
-int  PickupWatt(int numList, const char *username);
-void calculateEnergyandCost(void);
+void inputAppliance(const char *username, Appliance *appliance, int *ptr);
+void displaySummary(Appliance *appliance, int appliance_count);
+int  PickupWatt(int numList, const char *username, Appliance *appliance, int appliance_count);
+void calculateEnergyandCost(Appliance *appliance, int appliance_count);
 int  showListAppliance(const char *username);
 
 int electric(const char *username)
 {
     int choice;
+	Appliance appliance[50];
+	int	*ptr;
+	int appliance_count = 0;
+	
+	ptr = &appliance_count;
 
     do {
         displayMenu();
@@ -35,13 +39,11 @@ int electric(const char *username)
         {
             case 1 :
                 showListAppliance(username);
-                inputAppliance(username);
+                inputAppliance(username, appliance, ptr);
                 break;
             case 2 :
-                displaySummary();
+                displaySummary(appliance, appliance_count);
                 break;
-            // case 3 :
-            //     printf("3. Compare Appliances\n");
             case 3 :
                 printf("Loading...\r");
                 sleep(1);
@@ -64,16 +66,19 @@ void displayMenu(void)
 }
 
 
-void inputAppliance(const char *username)
+void inputAppliance(const char *username, Appliance *appliance, int *ptr)
 {
     int  check, numList;
+	int	appliance_count;
+
+	appliance_count = *ptr;
 
     do{
         printf("\nEnter Appliance Number [Press integer]: ");
         scanf(" %s", appliance[appliance_count].numList);
         while(getchar() != '\n');
         numList = atoi(appliance[appliance_count].numList);
-        check = PickupWatt(numList, username);  
+        check = PickupWatt(numList, username, appliance, *ptr);  
     } while(check == 1);
 
     printf("Enter hours used per day: ");
@@ -83,14 +88,19 @@ void inputAppliance(const char *username)
     scanf("%d", &appliance[appliance_count].days);
 
     
-
-    appliance_count++;
+	*ptr = *ptr + 1;
+    //appliance_count++;
 }
 
-void displaySummary(void)
+void displaySummary(Appliance *appliance, int appliance_count)
 {
     float totalEnergy = 0, totalCost = 0;
-    calculateEnergyandCost();
+    calculateEnergyandCost(appliance, appliance_count);
+    for(int i = 0; i < appliance_count; i++)
+    {
+        appliance[i].energy = appliance[i].watt * appliance[i].hours * appliance[i].days;
+        appliance[i].cost = (appliance[i].energy / 1000) * PowerRate;
+    }
     
     printf("\n-------------------- Usage Summary --------------------\n");
     printf("Appliance              Energy (kWh)         Cost (bath)\n");
@@ -105,7 +115,7 @@ void displaySummary(void)
     printf("Total Cost: %.2f bath\n", totalCost);
 }
 
-int PickupWatt(int numList, const char *username)
+int PickupWatt(int numList, const char *username, Appliance *appliance, int appliance_count)
 {
 	char	filepath[MAX_USERNAME_LENGTH + 30];
     int count = 0;
@@ -128,7 +138,7 @@ int PickupWatt(int numList, const char *username)
     return 1;
 }
 
-void calculateEnergyandCost(void)
+void calculateEnergyandCost(Appliance *appliance, int appliance_count)
 {
     for(int i = 0; i < appliance_count; i++)
     {

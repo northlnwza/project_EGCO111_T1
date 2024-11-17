@@ -28,5 +28,6 @@ int	ft_strcmp(char *s1, char *s2);
 int	ft_strl(char *s);
 int	login(void);
 int	electric(const char *username);
+int	ft_atoi(char *str);
 
 

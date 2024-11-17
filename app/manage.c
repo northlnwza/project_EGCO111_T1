@@ -23,9 +23,16 @@ void	addDevice(const char *username)
 	printf("Enter a new device:");
 	fgets(newDevice.name, sizeof(newDevice.name), stdin);
 	newDevice.name[strcspn(newDevice.name, "\n")] = 0;
-	printf("Enter device detail:");
-	fgets(newDevice.detail, sizeof(newDevice.detail), stdin);
-	newDevice.detail[strcspn(newDevice.detail, "\n")] = 0;
+	while (1)
+	{
+		printf("Enter device detail(rate of power):");
+		fgets(newDevice.detail, sizeof(newDevice.detail), stdin);
+		newDevice.detail[strcspn(newDevice.detail, "\n")] = 0;
+		if(ft_atoi(newDevice.detail) > 0)
+			break;
+		else
+			printf("<pls enter numbers more than 0>\n");
+	}
 	fprintf(file, "%s %s\n", newDevice.name, newDevice.detail);
 	fclose(file);
 	printf("Device added successfully.\n");
