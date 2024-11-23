@@ -15,7 +15,7 @@ int	identifier(char *filename, char *Input_Username, char *Input_Password)
 	}
 	while (fscanf(file, "%s %s", username, password) != EOF)
 	{
-		if (ft_strcmp(username, Input_Username) == 0 && ft_strcmp(password, Input_Password) == 0)
+		if (strcasecmp(username, Input_Username) == 0 && strcasecmp(password, Input_Password) == 0)
 		{	
 			fclose(file);
 			return (1);
@@ -37,7 +37,13 @@ int	login(void)
 	system(CLEAR_CMD);
 	while (attempts < MAX_TRIES)
 	{
-		printf("===== LOGIN ====\n");
+printf("===================================\n");
+printf("  L      OOO   GGGGG   III  N   N\n");
+printf("  L     O   O  G        I   NN  N\n");
+printf("  L     O   O  G  GG    I   N N N\n");
+printf("  L     O   O  G   G    I   N  NN\n");
+printf("  LLLLL  OOO   GGGGG   III  N   N\n");
+printf("===================================\n");
 		printf("EnterUsername: ");
 		scanf("%s", Input_Username);
 		printf("EnterPassword: ");
@@ -60,10 +66,10 @@ void	create_user_dir(const char *username)
 {
 	char	user_dir_path[MAX_USERNAME_LENGTH + 20];
 
-	mkdir(USERS_DIR, 0777);
+	mkdir(USERS_DIR);
 	sprintf(user_dir_path, "%s/%s", USERS_DIR, username);
 
-	if(mkdir(user_dir_path, 0777) == -1)
+	if(mkdir(user_dir_path) == -1)
 	{
 		printf("Error creating user folder.\n");
 	}
@@ -77,27 +83,57 @@ void    toregister(void)
         FILE    *file;
         char    username[MAX_USERNAME_LENGTH];
         char    password[MAX_PASSWORD_LENGTH];
+		char stored_username[MAX_USERNAME_LENGTH];
+    	char stored_password[MAX_PASSWORD_LENGTH];
+    	int user_exists = 0;
 
-        file = fopen(KEEP_USERS, "a");
+        file = fopen(KEEP_USERS, "r");
         if (file == NULL)
         {
                 printf("Error opening file\n");
                 return;
         }
         system(CLEAR_CMD);
-        printf("===== REGISTER =====\n");
+printf("=========================================================\n");
+printf("  RRRR    EEEEE  GGGGG  III  SSSSS  TTTTT  EEEEE  RRRR   \n");
+printf("  R   R   E      G       I   S        T    E      R   R   \n");
+printf("  RRRR    EEEE   G  GG   I   SSSSS    T    EEEE   RRRR    \n");
+printf("  R  R    E      G   G   I       S    T    E      R  R    \n");
+printf("  R   R   EEEEE  GGGGG  III  SSSSS    T    EEEEE  R   R   \n");
+printf("=========================================================\n");
+
+    while (1) {
         printf("Enter your username: ");
         scanf("%s", username);
+        getchar(); // Clear the input buffer to prevent issues with subsequent inputs
+
+        // Check if the username already exists in the file
+        user_exists = 0;
+        while (fscanf(file, "%s %s", stored_username, stored_password) != EOF) {
+            if (strcasecmp(username, stored_username) == 0) {
+                user_exists = 1;
+                break;  // Username already exists, exit the loop
+            }
+        }
+		        rewind(file);
+
+        if (user_exists) {
+            printf("Error: Username '%s' already exists. Please choose a different username.\n", username);
+        } else {
+            break;  // Valid username found, exit the loop
+        }
+    }
         printf("Enter your password: ");
         scanf("%s", password);
 	getchar();
 
+		file = fopen(KEEP_USERS, "a");
         fprintf(file, "%s %s\n", username, password);
         fclose(file);
 	create_user_dir(username);
 	while(1)
 	{
-		printf("\nType any key to go back to lobby");
+		printf("\nType Enter key to go back to lobby");
 		if(getchar()) 
 			break;
 	}
