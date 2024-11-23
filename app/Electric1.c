@@ -19,8 +19,28 @@ int  PickupWatt(int numList, const char *username, Appliance *appliance, int app
 void calculateEnergyandCost(Appliance *appliance, int appliance_count);
 int  showListAppliance(const char *username);
 
-int electric(const char *username)
+bool isFileValid = false;
+char globalFilePath[MAX_USERNAME_LENGTH + 30] = "";
+void initializeFileCheck(const char *username) {
+    sprintf(globalFilePath, "%s/%s/device.txt", USERS_DIR, username);
+    FILE *f = fopen(globalFilePath, "r");
+
+    if (f != NULL) {
+        // Check if the file contains text
+        if (fgetc(f) != EOF) {
+            isFileValid = true;
+        } else {
+            isFileValid = false; // File is empty
+        }
+        fclose(f);
+    } else {
+        isFileValid = false; // File doesn't exist
+    }
+}
+
+void electric(const char *username)
 {
+    initializeFileCheck(username);
     int choice;
 	Appliance appliance[50];
 	int	*ptr;
@@ -33,14 +53,21 @@ int electric(const char *username)
 
         printf("Enter your choice: ");
         scanf(" %d", &choice);
+        getchar();
 
         
         switch (choice)
         {
             case 1 :
+            if (isFileValid) {
                 showListAppliance(username);
                 inputAppliance(username, appliance, ptr);
                 break;
+            }
+            else{
+                printf("Device file not found or inaccessible.\n");
+                break;
+                }
             case 2 :
                 displaySummary(appliance, appliance_count);
                 break;
@@ -54,7 +81,6 @@ int electric(const char *username)
         }
 
     } while (choice != 3);
-    return 0;
 }
 
 void displayMenu(void)
@@ -81,11 +107,21 @@ void inputAppliance(const char *username, Appliance *appliance, int *ptr)
         check = PickupWatt(numList, username, appliance, *ptr);  
     } while(check == 1);
 
-    printf("Enter hours used per day: ");
-    scanf("%f", &appliance[appliance_count].hours);
+    do {
+        printf("Enter hours used per day (0-24): ");
+        scanf("%f", &appliance[appliance_count].hours);
+        if (appliance[appliance_count].hours < 0 || appliance[appliance_count].hours > 24) {
+            printf("Invalid input. Hours must be between 0 and 24.\n");
+        }
+    } while (appliance[appliance_count].hours < 0 || appliance[appliance_count].hours > 24);
 
-    printf("Enter number of days used per month: ");
-    scanf("%d", &appliance[appliance_count].days);
+    do {
+        printf("Enter number of days used per month (1-31): ");
+        scanf("%d", &appliance[appliance_count].days);
+        if (appliance[appliance_count].days < 1 || appliance[appliance_count].days > 31) {
+            printf("Invalid input. Days must be between 1 and 31.\n");
+        }
+    } while (appliance[appliance_count].days < 1 || appliance[appliance_count].days > 31);
 
     
 	*ptr = *ptr + 1;

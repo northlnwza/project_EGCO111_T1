@@ -11,7 +11,7 @@
 #define MAX_USERNAME_LENGTH 100 
 #define MAX_PASSWORD_LENGTH 100 
 #define MAX_TRIES 3 
-#define CLEAR_CMD "clear"
+#define CLEAR_CMD "cls"
 #define	KEEP_USERS "users.txt"
 #define USERS_DIR "users_data"
 
@@ -27,7 +27,7 @@ char	*ft_strcpy(char *dst, char *src);
 int	ft_strcmp(char *s1, char *s2);
 int	ft_strl(char *s);
 int	login(void);
-int	electric(const char *username);
+void	electric(const char *username);
 int	ft_atoi(char *str);
 
 

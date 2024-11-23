@@ -7,3 +7,5 @@ type: ./app
 To modify 
 type: make fclean
 
+To compile in vs code
+just use extension franneck94.c-cpp-runner (copy paste in extension search bar)

@@ -75,7 +75,7 @@ void	parse_cmd(char *input, const char *username)
 		electric(username);
 	}
 	else 
-		printf("type \"help\" to see all command program\n");
+		printf("Invalid command, type \"help\" to see all command program\n");
 }
 
 void	outline(char *current_user)
