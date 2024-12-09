@@ -10,8 +10,6 @@ typedef struct {
     int watt;
 } Appliance;
 
-//Appliance appliance[50];
-//int appliance_count = 0;
 void displayMenu(void);
 void inputAppliance(const char *username, Appliance *appliance, int *ptr);
 void displaySummary(Appliance *appliance, int appliance_count);
@@ -101,7 +99,7 @@ void displaySummary(Appliance *appliance, int appliance_count)
         appliance[i].energy = appliance[i].watt * appliance[i].hours * appliance[i].days;
         appliance[i].cost = (appliance[i].energy / 1000) * PowerRate;
     }
-    
+	system(CLEAR_CMD); 
     printf("\n-------------------- Usage Summary --------------------\n");
     printf("Appliance              Energy (kWh)         Cost (bath)\n");
     printf("-------------------------------------------------------\n");

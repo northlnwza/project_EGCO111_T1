@@ -185,7 +185,7 @@ void	editDevice(const char *username)
 	fgets(updatedDevice.detail, sizeof(updatedDevice.detail), stdin);
 	updatedDevice.detail[strcspn(updatedDevice.detail, "\n")] = 0;
 	//update the device in array
-	sprintf(newDevice, "%s %s", updatedDevice.name, updatedDevice.detail);
+	sprintf(newDevice, "%s %s\n", updatedDevice.name, updatedDevice.detail);
 	ft_strcpy(devices[deviceNumber - 1], newDevice);
 	//write updated devices back to the file 
 	file = fopen(filepath, "w");

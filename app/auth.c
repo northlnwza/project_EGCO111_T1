@@ -6,7 +6,6 @@ int	identifier(char *filename, char *Input_Username, char *Input_Password)
 	char	username[MAX_USERNAME_LENGTH];
 	char	password[MAX_USERNAME_LENGTH];
 
-
 	file = fopen(filename, "r");
 	if (file == NULL)
 	{
@@ -56,6 +55,27 @@ int	login(void)
 	return (0);
 }
 
+void	create_user_bill(const char *path)
+{
+	FILE	*f;
+	char	PAID[MAX_USERNAME_LENGTH + 20 + 20];	
+	char	UNPAID[MAX_USERNAME_LENGTH + 20 + 20];	
+	char	AmountBill[MAX_USERNAME_LENGTH + 20 + 20];	
+
+	sprintf(PAID, "%s/PAID", path);
+	sprintf(UNPAID, "%s/UNPAID", path);
+	sprintf(AmountBill, "%s/Amount_of_bill.txt", path);
+	mkdir(PAID, 0777);
+	mkdir(UNPAID, 0777);
+	f = fopen(AmountBill, "w");
+	if (f == 0)
+	{
+		printf("error\n");
+		return;
+	}
+	fclose(f);
+}
+
 void	create_user_dir(const char *username)
 {
 	char	user_dir_path[MAX_USERNAME_LENGTH + 20];
@@ -68,8 +88,32 @@ void	create_user_dir(const char *username)
 		printf("Error creating user folder.\n");
 	}
 	else
+	{
+		create_user_bill(user_dir_path);
 		printf("User folder create at %s.\n", user_dir_path);
+	}
 	
+}
+
+int	checkdup(char	*username)
+{
+	FILE	*f;
+	char	name[MAX_USERNAME_LENGTH];
+	char	password[MAX_PASSWORD_LENGTH];
+
+	f = fopen(KEEP_USERS, "r");
+	if (f == 0)
+	{
+		printf("Error opening file\n");
+		return (2);
+	}
+	while (fscanf(f, "%s %s", name, password) != EOF)
+	{
+		if (strcmp(username, name) == 0)
+			return (1);
+	}	
+	fclose(f);
+	return (0);
 }
 
 void    toregister(void)
@@ -77,6 +121,7 @@ void    toregister(void)
         FILE    *file;
         char    username[MAX_USERNAME_LENGTH];
         char    password[MAX_PASSWORD_LENGTH];
+	int	ischeckdup;
 
         file = fopen(KEEP_USERS, "a");
         if (file == NULL)
@@ -86,12 +131,23 @@ void    toregister(void)
         }
         system(CLEAR_CMD);
         printf("===== REGISTER =====\n");
+	/*
         printf("Enter your username: ");
-        scanf("%s", username);
+       	scanf("%s", username);
+	*/
+	while (1)
+	{
+        	printf("Enter your username: ");
+        	scanf("%s", username);
+		ischeckdup = checkdup(username);
+		if (ischeckdup == 1)
+			printf("this name already taken!\n");
+		else if (ischeckdup == 0)
+			break;
+	}
         printf("Enter your password: ");
         scanf("%s", password);
 	getchar();
-
         fprintf(file, "%s %s\n", username, password);
         fclose(file);
 	create_user_dir(username);
