@@ -1,0 +1,3 @@
+Fan 60
+Television 69
+Clothes_dryers 1575

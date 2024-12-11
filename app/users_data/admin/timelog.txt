@@ -1,0 +1,4 @@
+w (100) was ON for 2 seconds
+fan (20) was ON for 2 seconds
+air (50) was ON for 3 seconds
+computer (50) was ON for 26 seconds

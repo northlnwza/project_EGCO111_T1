@@ -64,7 +64,7 @@ void	create_user_bill(const char *path)
 
 	sprintf(PAID, "%s/PAID", path);
 	sprintf(UNPAID, "%s/UNPAID", path);
-	sprintf(AmountBill, "%s/Amount_of_bill.txt", path);
+	sprintf(AmountBill, "%s/Amount_of_bills.txt", path);
 	mkdir(PAID, 0777);
 	mkdir(UNPAID, 0777);
 	f = fopen(AmountBill, "w");

@@ -50,7 +50,8 @@ void	parse_cmd(char *input, const char *username)
 		printf("type \"logout\" to go to lobby.\n");
 		printf("type \"clear\" to clear terminal-text.\n");
 		printf("type \"device\" to manage your device.\n");
-		printf("type \"electric\" to calculate your electric cost.\n");
+		printf("type \"use\" to turn on your device.\n");
+		printf("type \"cal\" to calculate your electric cost.\n");
 		printf("-----------------------------\n");
 	}
 	else if (ft_strcmp(input, "exit") == 0)
@@ -70,9 +71,13 @@ void	parse_cmd(char *input, const char *username)
 	{
 		device_manager(username);
 	}
-	else if (ft_strcmp(input, "electric") == 0)
+	else if (ft_strcmp(input, "cal") == 0)
 	{
 		electric(username);
+	}
+	else if (ft_strcmp(input, "use") == 0)
+	{
+		usedevice(username);
 	}
 	else 
 		printf("type \"help\" to see all command program\n");

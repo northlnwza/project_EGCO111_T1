@@ -1,4 +1,10 @@
-#include "header.h" 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include <unistd.h>
+
+#define PowerRate 4
 
 typedef struct {
     char numList[50];
@@ -10,40 +16,42 @@ typedef struct {
     int watt;
 } Appliance;
 
-void displayMenu(void);
-void inputAppliance(const char *username, Appliance *appliance, int *ptr);
-void displaySummary(Appliance *appliance, int appliance_count);
-int  PickupWatt(int numList, const char *username, Appliance *appliance, int appliance_count);
-void calculateEnergyandCost(Appliance *appliance, int appliance_count);
-int  showListAppliance(const char *username);
+Appliance appliance[50];
+int appliance_count = 0;
 
-int electric(const char *username)
+void displayMenu(void);
+void inputAppliance(void);
+void displaySummary(void);
+int  PickupWatt(int);
+void calculateEnergyandCost(void);
+int  showListAppliance(void);
+
+int main()
 {
     int choice;
-	Appliance appliance[50];
-	int	*ptr;
-	int appliance_count = 0;
-	
-	ptr = &appliance_count;
 
     do {
         displayMenu();
 
         printf("Enter your choice: ");
-        scanf(" %d", &choice);
+        scanf("%d", &choice);
 
+        fflush(stdin);
         
         switch (choice)
         {
             case 1 :
-                showListAppliance(username);
-                inputAppliance(username, appliance, ptr);
+                showListAppliance();
+                inputAppliance();
                 break;
             case 2 :
-                displaySummary(appliance, appliance_count);
+                displaySummary();
                 break;
-            case 3 :
+            // case 3 :
+            //     printf("3. Compare Appliances\n");
+            case 4 :
                 printf("Loading...\r");
+                fflush(stdout); 
                 sleep(1);
                 printf("Exiting...");
                 break;
@@ -51,7 +59,7 @@ int electric(const char *username)
                 printf("Invalid choice. Please try again.\n");
         }
 
-    } while (choice != 3);
+    } while (choice != 4);
     return 0;
 }
 
@@ -60,28 +68,21 @@ void displayMenu(void)
     printf("\n--- Electricity Usage Calculator ---\n");
     printf("1. Input Appliance Data\n");
     printf("2. View Usage Summary\n");
-    printf("3. Exit\n");
+    printf("3. Compare Appliances\n");
+    printf("4. Exit\n");
 }
 
 
-void inputAppliance(const char *username, Appliance *appliance, int *ptr)
+void inputAppliance(void)
 {
-    int  check, numList;
-	int	appliance_count;
-
-	appliance_count = *ptr;
-	if (appliance_count == 0)
-	{
-		printf("error pls add device first!\n");
-		return;
-	}
+    int i = 0, check, error, numList;
 
     do{
-        printf("\nEnter Appliance Number [Press integer]: ");
+        printf("\nEnter Appliance Number [Press 1-10]: ");
         scanf(" %s", appliance[appliance_count].numList);
         while(getchar() != '\n');
         numList = atoi(appliance[appliance_count].numList);
-        check = PickupWatt(numList, username, appliance, *ptr);  
+        check = PickupWatt(numList);  
     } while(check == 1);
 
     printf("Enter hours used per day: ");
@@ -91,20 +92,15 @@ void inputAppliance(const char *username, Appliance *appliance, int *ptr)
     scanf("%d", &appliance[appliance_count].days);
 
     
-	*ptr = *ptr + 1;
-    //appliance_count++;
+
+    appliance_count++;
 }
 
-void displaySummary(Appliance *appliance, int appliance_count)
+void displaySummary(void)
 {
     float totalEnergy = 0, totalCost = 0;
-    calculateEnergyandCost(appliance, appliance_count);
-    for(int i = 0; i < appliance_count; i++)
-    {
-        appliance[i].energy = appliance[i].watt * appliance[i].hours * appliance[i].days;
-        appliance[i].cost = (appliance[i].energy / 1000) * PowerRate;
-    }
-	system(CLEAR_CMD); 
+    calculateEnergyandCost();
+    
     printf("\n-------------------- Usage Summary --------------------\n");
     printf("Appliance              Energy (kWh)         Cost (bath)\n");
     printf("-------------------------------------------------------\n");
@@ -118,14 +114,12 @@ void displaySummary(Appliance *appliance, int appliance_count)
     printf("Total Cost: %.2f bath\n", totalCost);
 }
 
-int PickupWatt(int numList, const char *username, Appliance *appliance, int appliance_count)
+int PickupWatt(int numList)
 {
-	char	filepath[MAX_USERNAME_LENGTH + 30];
     int count = 0;
+    char check[4];
     FILE *pickup;
-
-	sprintf(filepath, "%s/%s/device.txt", USERS_DIR, username);
-    pickup = fopen(filepath, "r");
+    pickup = fopen("Device.txt", "r");
 
     while(fscanf(pickup, "%s %d", appliance[appliance_count].lists, &appliance[appliance_count].watt) == 2)
     { 
@@ -141,7 +135,7 @@ int PickupWatt(int numList, const char *username, Appliance *appliance, int appl
     return 1;
 }
 
-void calculateEnergyandCost(Appliance *appliance, int appliance_count)
+void calculateEnergyandCost(void)
 {
     for(int i = 0; i < appliance_count; i++)
     {
@@ -150,18 +144,17 @@ void calculateEnergyandCost(Appliance *appliance, int appliance_count)
     }
 }
 
-int showListAppliance(const char *username)
+int showListAppliance(void)
 {
 	char	str[100];
-	char	filepath[MAX_USERNAME_LENGTH + 30];
     int i;
     FILE* f;
-
-	sprintf(filepath, "%s/%s/device.txt", USERS_DIR, username);
-    f = fopen(filepath, "r");
+    f = fopen("Device.txt", "r");
+    char info;
 
     printf("----------------------------\n");
     printf("List of Devices\n");
+	printf("device   watt\n");
     printf("----------------------------\n");
     if(f == NULL)
     {
@@ -176,6 +169,26 @@ int showListAppliance(const char *username)
 		i++;
 	}
     printf("\n----------------------------\n");
+/*
+    while((info = fgetc(f)) != EOF)
+    {
+        if(count == 1)
+        {
+            printf("1. ");
+            count++;
+        }    
+        if(info == '\n')
+        {
+            printf(" Watt");
+            printf("\n");
+            printf("%d. ", count);
+            count++;
+        }
+        else 
+            printf("%c", info);
+    }
+    printf(" Watt");
+    printf("\n----------------------------");
+*/
     fclose(f);
-	return (0);
 }

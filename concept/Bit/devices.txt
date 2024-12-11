@@ -1,0 +1,3 @@
+fridge 200
+air_conditioner 1500
+heater 1200

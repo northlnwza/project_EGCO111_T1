@@ -25,7 +25,7 @@ void	addDevice(const char *username)
 	newDevice.name[strcspn(newDevice.name, "\n")] = 0;
 	while (1)
 	{
-		printf("Enter device detail(rate of power):");
+		printf("Enter device power(kwh):");
 		fgets(newDevice.detail, sizeof(newDevice.detail), stdin);
 		newDevice.detail[strcspn(newDevice.detail, "\n")] = 0;
 		if(ft_atoi(newDevice.detail) > 0)

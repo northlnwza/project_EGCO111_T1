@@ -1,0 +1,15 @@
+--------------- Electricity Bill ----------------
+
+Part 1
+    Energy Payment (EP)                44.20 bath
+    Service charge                      8.19 bath
+Part 2
+    Fuel Adjustment charge              7.15 bath
+Part 3
+    Value Added Tax (7%)                4.17 bath
+
+Total Energy Consumed:    18.00 kWh
+Total Bill Amount (including VAT):     63.70 bath
+
+Status: PAID
+--------------------------------------------------

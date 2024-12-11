@@ -1,0 +1,10 @@
+fridge (200) was ON for 1 seconds
+fridge (200) was ON for 3 seconds
+air_conditioner (1500) was ON for 3 seconds
+heater (1200) was ON for 2 seconds
+fridge (200) was ON for 1 seconds
+air_conditioner (1500) was ON for 8 seconds
+fridge (200) was ON for 1 seconds
+air_conditioner (1500) was ON for 1 seconds
+heater (1200) was ON for 10 seconds
+fridge (200) was ON for 1 seconds
