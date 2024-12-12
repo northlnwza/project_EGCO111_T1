@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <unistd.h>
 #include <time.h>
+#include <ctype.h>
 #include <sys/stat.h>
 
 #define PowerRate 4

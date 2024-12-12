@@ -1,5 +1,36 @@
 #include "header.h"
 
+void	screen()
+{
+    printf("                 ______________________________________________________\n");
+    printf("               /                                                       \\\n");
+    printf("             /   ____________________________________________________    \\\n");
+    printf("            |   |                                                    |    |\n");
+    printf("            |   |type \"exit\" to quit program.                        |    |\n");
+    printf("            |   |type \"logout\" to go to lobby.                       |    |\n");
+    printf("            |   |type \"clear\" to clear terminal-text.                |    |\n");
+    printf("            |   |type \"device\" to manage your device.                |    |\n");
+    printf("            |   |type \"use\" to turn on your device.                  |    |\n");
+    printf("            |   |type \"cal\" to calculate your electric cost.         |    |\n");
+    printf("            |   |                                                    |    |\n");
+    printf("            |   |                                                    |    |\n");
+    printf("            |   |                                                    |    |\n");
+    printf("            |   |                                                    |    |\n");
+    printf("            |   |                                                    |    |\n");
+    printf("            |   |____________________________________________________|    |\n");
+    printf("             \\                                                           /\n");
+    printf("               \\________________________________________________________/\n");
+    printf("                         \\___________________________________/\n");
+    printf("                      ___________________________________________\n");
+    printf("                   _-'    .-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.  --- `-_\n");
+    printf("                _-'.-.-. .---.-.-.-.-.-.-.-.-.-.-.-.-.-.-.--.  .-.-.`-_\n");
+    printf("             _-'.-.-.-. .---.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-`__`. .-.-.-.`-_\n");
+    printf("          _-'.-.-.-.-. .-----.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-----. .-.-.-.-.`-_\n");
+    printf("       _-'.-.-.-.-.-. .---.-. .-------------------------. .-.---. .---.-.-.-.`-_\n");
+    printf("      :-------------------------------------------------------------------------:\n");
+    printf("      :-------------------------------------------------------------------------:\n");
+}
+
 void	device_manager(const char *username)
 {
 	int	choice;
@@ -45,14 +76,7 @@ void	parse_cmd(char *input, const char *username)
 	if (ft_strcmp(input, "help") == 0)
 	{
 		system(CLEAR_CMD);		
-		printf("-----------------------------\n");
-		printf("type \"exit\" to quit program.\n");
-		printf("type \"logout\" to go to lobby.\n");
-		printf("type \"clear\" to clear terminal-text.\n");
-		printf("type \"device\" to manage your device.\n");
-		printf("type \"use\" to turn on your device.\n");
-		printf("type \"cal\" to calculate your electric cost.\n");
-		printf("-----------------------------\n");
+		screen();
 	}
 	else if (ft_strcmp(input, "exit") == 0)
 	{
@@ -91,8 +115,7 @@ void	outline(char *current_user)
 	printf("Login Successfully ! welcome %s \n", current_user);
 	while (1)
 	{
-		printf("user:%s\n", current_user);
-		printf("pls enter command : ");
+		printf("%s pls enter command : ", current_user);
 		parse_cmd(strinput(str), current_user);
 	}
 }

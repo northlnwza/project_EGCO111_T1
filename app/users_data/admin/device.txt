@@ -1,4 +1,0 @@
-w 100
-fan 20
-air 50
-computer 50

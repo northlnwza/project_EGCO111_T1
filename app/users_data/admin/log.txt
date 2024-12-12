@@ -1,8 +1,0 @@
-2024/12/11 19:11:28 - w (100) toggled to ON
-2024/12/11 19:11:29 - fan (20) toggled to ON
-2024/12/11 19:11:29 - air (50) toggled to ON
-2024/12/11 19:11:30 - w (100) toggled to OFF
-2024/12/11 19:11:31 - fan (20) toggled to OFF
-2024/12/11 19:11:32 - air (50) toggled to OFF
-2024/12/11 19:12:47 - computer (50) toggled to ON
-2024/12/11 19:13:13 - computer (50) toggled to OFF

@@ -15,16 +15,20 @@ void inputAppliance(const char *username, Appliance *appliance, int *ptr);
 void displaySummary(Appliance *appliance, int appliance_count);
 int  PickupWatt(int numList, const char *username, Appliance *appliance, int appliance_count);
 void calculateEnergyandCost(Appliance *appliance, int appliance_count);
-int  showListAppliance(const char *username);
+int  showListAppliance(const char *username, int *pcd);
 
 int electric(const char *username)
 {
     int choice;
 	Appliance appliance[50];
-	int	*ptr;
 	int appliance_count = 0;
+	int	count_device = 0;
+	int	*pcd;
+	int	*ptr;
 	
 	ptr = &appliance_count;
+	pcd = &count_device;
+
 
     do {
         displayMenu();
@@ -36,8 +40,15 @@ int electric(const char *username)
         switch (choice)
         {
             case 1 :
-                showListAppliance(username);
-                inputAppliance(username, appliance, ptr);
+                if (showListAppliance(username, pcd) == 1)
+			break;
+		if (count_device != 0)
+                	inputAppliance(username, appliance, ptr);
+		else
+			{
+			printf("there is no device!");
+			break;
+			}
                 break;
             case 2 :
                 displaySummary(appliance, appliance_count);
@@ -70,18 +81,12 @@ void inputAppliance(const char *username, Appliance *appliance, int *ptr)
 	int	appliance_count;
 
 	appliance_count = *ptr;
-	if (appliance_count == 0)
-	{
-		printf("error pls add device first!\n");
-		return;
-	}
-
     do{
         printf("\nEnter Appliance Number [Press integer]: ");
         scanf(" %s", appliance[appliance_count].numList);
         while(getchar() != '\n');
         numList = atoi(appliance[appliance_count].numList);
-        check = PickupWatt(numList, username, appliance, *ptr);  
+        check = PickupWatt(numList, username, appliance, appliance_count);  
     } while(check == 1);
 
     printf("Enter hours used per day: ");
@@ -89,8 +94,7 @@ void inputAppliance(const char *username, Appliance *appliance, int *ptr)
 
     printf("Enter number of days used per month: ");
     scanf("%d", &appliance[appliance_count].days);
-
-    
+   
 	*ptr = *ptr + 1;
     //appliance_count++;
 }
@@ -150,7 +154,7 @@ void calculateEnergyandCost(Appliance *appliance, int appliance_count)
     }
 }
 
-int showListAppliance(const char *username)
+int showListAppliance(const char *username, int	*pcd)
 {
 	char	str[100];
 	char	filepath[MAX_USERNAME_LENGTH + 30];
@@ -160,20 +164,21 @@ int showListAppliance(const char *username)
 	sprintf(filepath, "%s/%s/device.txt", USERS_DIR, username);
     f = fopen(filepath, "r");
 
-    printf("----------------------------\n");
-    printf("List of Devices\n");
-    printf("----------------------------\n");
     if(f == NULL)
     {
         printf("Error opening file\n");
         return 1;
     }
+    printf("----------------------------\n");
+    printf("List of Devices\n");
+    printf("----------------------------\n");
 
 	i = 0;
 	while(fgets(str, sizeof(str), f))
 	{
 		printf("%d. %s", i + 1, str);
 		i++;
+		*pcd = *pcd + 1;
 	}
     printf("\n----------------------------\n");
     fclose(f);
